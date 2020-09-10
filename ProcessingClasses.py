@@ -3,6 +3,7 @@
 # Desc: A Module for processing Classes
 # Change Log: (Who, When, What)
 # Rupa Guha, 2020-September-08, Created File
+# Rupa Guha, 2020-September-09, Made Adjustments for the new Track Class
 #------------------------------------------#
 
 if __name__ == '__main__':
@@ -49,8 +50,16 @@ class DataProcessor:
             row (DC.CD): CD object that matches cd_idx
 
         """
-        # TODO add code as required
-        pass
+        # TODone add code as required
+        try:
+            cd_idx = int(cd_idx)
+        except ValueError as e:
+            print("ID must be an integer only!")
+            print(e.__doc__)
+        for row in table:
+            if row.cd_id == cd_idx:
+                return row
+        raise Exception("This Cd or Album does not exist!")
 
 
     @staticmethod
@@ -69,8 +78,16 @@ class DataProcessor:
             None: DESCRIPTION.
 
         """
-
-        # TODO add code as required
-        pass
+        # TODone add code as required
+        trkPosition, trkTitle, trkLength = track_info
+        
+        try:
+            trkPosition = int(trkPosition)
+        except:
+            raise Exception("Track position must be numeric only!")
+        
+        track = DC.Track(trkPosition, trkTitle, trkLength)
+        cd.add_track(track)
+        
 
 

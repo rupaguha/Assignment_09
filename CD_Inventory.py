@@ -7,6 +7,7 @@
 
 import ProcessingClasses as PC
 import IOClasses as IO
+import DataClasses as DC
 
 lstFileNames = ['AlbumInventory.txt', 'TrackInventory.txt']
 lstOfCDObjects = IO.FileIO.load_inventory(lstFileNames)
@@ -40,7 +41,36 @@ while True:
         IO.ScreenIO.show_inventory(lstOfCDObjects)
         cd_idx = input('Select the CD / Album index: ')
         cd = PC.DataProcessor.select_cd(lstOfCDObjects, cd_idx)
-        # TODO add code to handle tracks on an individual CD
+        # TODone add code to handle tracks on an individual CD
+
+        # Send to whatever routines based on what track choice
+
+        while True:
+            # Display choices for tracks
+            IO.print_CD_menu()
+            trkChoice = IO.menu_CD_choice()
+
+            if trkChoice == 'x':
+                break
+
+            if trkChoice == 'a':
+                track_info = IO.get_track_info()
+                PC.add_track(track_info, cd)
+
+                continue  # start loop back at top.
+                
+            elif trkChoice == 'd':
+                IO.show_tracks(cd)
+
+                continue  # start loop back at top.
+
+            elif trkChoice == 'r':
+                trkDel = int(input("Which track do you want to remove?")
+                DC.CD.rmv_track(cd,trkDel)
+
+                continue  # start loop back at top.
+
+                
     elif strChoice == 's':
         IO.ScreenIO.show_inventory(lstOfCDObjects)
         strYesNo = input('Save this inventory to file? [y/n] ').strip().lower()

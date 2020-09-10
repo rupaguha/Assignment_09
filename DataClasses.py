@@ -3,6 +3,7 @@
 # Desc: A Module for Data Classes
 # Change Log: (Who, When, What)
 # Rupa Guha, 2020-September-08, Created File
+# Rupa Guha, 2020-September-09, Added Code for the new Track Class
 #------------------------------------------#
 
 if __name__ == '__main__':
@@ -19,21 +20,65 @@ class Track():
         get_record() -> (str)
 
     """
-    # TODO add Track class code
+    # TODone add Track class code
     # -- Constructor -- #
+    def __init__(self, pos, title, length):
+        self.__position = pos
+        self.__title = title
+        self.__length = length
 
     # -- Properties -- #
+    
     # Track position
+    @property
+    def postion(self):
+        return self.__position
 
+    @postion.setter
+    def postion(self, value):
+        if type(value) == int:
+            if value < 1:
+                raise Exception("Position cannot be less than 1!")
+            self.__position = int(value)
+        else:
+            raise Exception('ID needs to be Integer')
+
+    # Track title
+    @property
+    def title(self):
+        return self.__title
+
+    @title.setter
+    def title(self, value):
+        if type(value) == str:
+            self.__title = value
+        else:
+            raise Exception("Title needs to be a string!")
+
+    # Track length
+    @property
+    def length(self):
+        return self.__length
+
+    @length.setter
+    def length(self, value):
+        if type(value) == str:
+            self.__length = value
+        else:
+            raise Exception("Track length needs to be a string!")
+        
+    
     # -- Methods -- #
-    # TODO Add Track class methods
+    
+    # TOdone Add Track class methods
     def __str__(self):
         """Returns Track details as formatted string"""
-        pass
+        return "{:>2}. {} ({})".format(self.__position,self.__title,self.__length)
+    
 
     def get_record(self) -> str:
         """Returns: Track record formatted for saving to file"""
-        pass
+        return "{},{},{}\n".format(self.__position,self.__title,self.__length)
 
 
 class CD:
@@ -61,6 +106,7 @@ class CD:
             self.__cd_id = int(cd_id)
             self.__cd_title = str(cd_title)
             self.__cd_artist = str(cd_artist)
+            self.__tracks = []
         except Exception as e:
             raise Exception('Error setting initial values:\n' + str(e))
 
@@ -126,8 +172,11 @@ class CD:
             None.
 
         """
-        # TODO append track
-        # TODO sort tracks
+        # TODone append track
+        # TODone sort tracks
+        
+        self.__tracks.append(track)
+        self.__sort_tracks()
 
     def rmv_track(self, track_id: int) -> None:
         """Removes the track identified by track_id from Album
@@ -140,8 +189,11 @@ class CD:
             None.
 
         """
-        # TODO remove track
-        # TODO sort tracks
+        # TODone remove track
+        # TODone sort tracks
+        
+        del self.__tracks[track_id - 1] 
+        self.__sort_tracks()
 
     def __sort_tracks(self):
         """Sorts the tracks using Track.position. Fills blanks with None"""

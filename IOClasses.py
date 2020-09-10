@@ -3,6 +3,7 @@
 # Desc: A Module for IO Classes
 # Change Log: (Who, When, What)
 # Rupa Guha, 2020-September-08, Created File
+# Rupa Guha, 2020-September-09, Made Adjustments for the new Track Class
 #------------------------------------------#
 
 if __name__ == '__main__':
@@ -36,11 +37,22 @@ class FileIO:
         """
 
         # TODO modify method to accept a list of file names.
+        file_name_CD = file_name[0] 
+        file_name_trk = file_name[1]
+        
         try:
             with open(file_name_CD, 'w') as file:
                 for disc in lst_Inventory:
                     file.write(disc.get_record())
-            # TODO add code to save track data to file
+            with open(file_name_trk, 'w') as file:
+                 for disc in lst_Inventory:
+                     tracks = disc.cd_tracks
+                     disc_id = disc.cd_id
+                     for trk in tracks:
+                         if trk is not None:
+                             record = '{},{}'.format(disc_id, trk.get_record())
+                             file.write(record)
+            # TODone add code to save track data to file
         except Exception as e:
             print('There was a general error!', e, e.__doc__, type(e), sep='\n')
 
@@ -58,6 +70,9 @@ class FileIO:
         """
 
         lst_Inventory = []
+        file_name_CD = file_name[0] 
+        file_name_trk = file_name[1]
+        
         # TODO modify method to accept a list of file names
         try:
             with open(file_name_CD, 'r') as file:
@@ -66,6 +81,12 @@ class FileIO:
                     row = DC.CD(data[0], data[1], data[2])
                     lst_Inventory.append(row)
             # TODO add code to load track data
+            with open(file_name_trk, 'r') as file:
+                for line in file:
+                    data = line.strip().split(',')
+                    cd = PC.DataProcessor.select_cd(lst_Inventory, int(data[0]))
+                    track = DC.Track(int(data[1]), data[2], data[3])
+                    cd.add_track(track)
         except Exception as e:
             print('There was a general error!', e, e.__doc__, type(e), sep='\n')
         return lst_Inventory
